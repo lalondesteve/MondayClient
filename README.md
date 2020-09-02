@@ -8,8 +8,8 @@ A client to query Monday.com v2 API
 
 ### Getting Started
 This code uses python-dotenv to set environment variables
-You will need a .env file with your monday api key:
-MONDAY_TOKEN="{{API TOKEN}}"
+You will need a .env file with your monday api key as a variable:
+`MONDAY_TOKEN="{{API TOKEN}}"`
 
 ### Example
 ```
