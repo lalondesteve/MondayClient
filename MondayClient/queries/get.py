@@ -9,7 +9,7 @@ def boards(limit=1000):
 
 def board(board_id):
     return f"{{boards(ids:{board_id}){{" \
-            f"board_id:id name description updated_at}} }}"
+           f"board_id:id name description updated_at}} }}"
 
 
 def items(board_id):
@@ -23,7 +23,7 @@ def items(board_id):
 
 def item(item_id):
     return f"{{items(ids:{item_id}){{" \
-            f"item_id:id name}} }}"
+           f"item_id:id name}} }}"
 
 
 def columns(item_id=None, board_id=None):
@@ -55,3 +55,24 @@ def column_value(item_id, columns_ids, values=None):
         }}
     }}"""
     return minify(query)
+
+
+def value_by_column_type(column_type, value):
+    if column_type == 'boolean':
+        if value is True:
+            return {"checked": "true"}
+        elif value is False:
+            return {}
+
+    if column_type == "color":
+        return {"label": f"{value}"}
+
+    if column_type == "dropdown":
+        return {"labels": [f"{value}"]}
+
+    if column_type == "text":
+        return f"{value}"
+
+    if column_type == "date":
+        # when should we check the validity of date?
+        return {"date": "{value"}

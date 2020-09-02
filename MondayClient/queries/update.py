@@ -30,17 +30,21 @@ def multiple_column_values(board_id: int, item_id: int, values=None, **kwargs):
         values = {}
     values.update(kwargs)
     variables = {'column_values': json.dumps(values)}
+    ids = json.dumps([x for x in values])
     query = f"""mutation($column_values: JSON!){{
                 change_multiple_column_values (
                     board_id: {board_id},
                     item_id: {item_id},
                     column_values: $column_values)
-                {{id}}
+                {{
+                    id column_values (ids:{ids}) 
+                        {{id text}}
+                }}
             }}"""
     return minify(query), variables
 
 
-def column_value(board_id: int, item_id: int, column_id: str, value):
+def column_value(board_id, item_id, column_id: str, value):
     """
     Return a query to change a single column value
 

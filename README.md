@@ -11,7 +11,7 @@ This code uses python-dotenv to set environment variables
 You will need a .env file with your monday api key as a variable:
 `MONDAY_TOKEN="{{API TOKEN}}"`
 
-### Example
+### Query and access Example
 ```
 import MondayClient
 mc = MondayClient.Client()
@@ -26,5 +26,28 @@ print(mc.board.item.columns.values)
 print(mc.board.item.columns['{{column_id}}'])
 ```
 
-Mutation queries are not implemented yet. 
+Only basic implementation of mutation for certain column types are implemented
 
+### Mutation example
+```
+import MondayClient
+mc = MondayClient.Client()
+mc.board = {{board_id}}
+mc.board.item = {{item_id}}
+mc.board.item.columns['status'] = value
+
+mc.board.item.update_multiple_columns(status=value1, note=value2)
+# OR
+values = {status: value1, note: value2)
+mc.board.item.update_multiple_columns(values=values)
+```
+
+Implemented column types :
+
+| GUI name | (API type) |
+| :------: | :--------: |
+| Checkbox | (boolean)  |
+| Status   | (color)    | 
+| Dropdown | (dropdown) | 
+| Text     | (text)     | 
+| Date     | (date)     | 

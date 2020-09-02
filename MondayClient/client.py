@@ -1,9 +1,14 @@
 import os
 import requests
+import logging
 
 from dotenv import load_dotenv
 import MondayClient.queries
 from MondayClient.board import BoardCollection
+
+logging.basicConfig(filename="MondayClient.log",
+                    level=logging.DEBUG,
+                    format='%(asctime)s: %(levelname)s: %(message)s')
 
 # Setup environment variables
 load_dotenv()
@@ -24,13 +29,15 @@ class Client:
 
     def execute_query(self, query, variables=None):
         data = {'query': query}
-        if variables:
+        if variables is not None:
             v = {'variables': variables}
             data.update(v)
+        logging.debug(f'{data}')
         try:
             r = requests.post(url=API_URL, json=data, headers=self.headers)
+            logging.debug(f'{r}')
         except Exception as e:
-            print(e)
+            logging.exception(e)
             raise e
         else:
             return r.json()

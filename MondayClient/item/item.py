@@ -16,8 +16,8 @@ class Item(MondayItem):
     def columns_ids(self):
         if not self._columns_ids:
             r = self.client.execute_query(
-                    MondayClient.queries.get.columns(
-                        item_id=self.id))
+                MondayClient.queries.get.columns(
+                    item_id=self.id))
             values = r["data"]["items"][0]["column_values"]
             self._columns_ids = [x["id"] for x in values]
         return self._columns_ids
@@ -43,3 +43,6 @@ class Item(MondayItem):
         r = self.client.execute_query(
             self.client.queries.get.item(self.id))
         self.values = r["data"]["items"][0]
+
+    def update_multiple_columns(self, **kwargs):
+        self.columns.update_multiple_columns(**kwargs)
