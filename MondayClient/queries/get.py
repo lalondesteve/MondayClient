@@ -57,6 +57,17 @@ def column_value(item_id, columns_ids, values=None):
     return minify(query)
 
 
+def item_by_column_value(board_id, column_id, value):
+    query = f"""{{
+        items_by_column_values(
+            board_id: {board_id},
+            column_id: {column_id},
+            column_value: {value})
+        {{item_id:id}}
+    }}"""
+    return minify(query)
+
+
 def value_by_column_type(column_type, value):
     if column_type == 'boolean':
         if value is True:
