@@ -57,13 +57,13 @@ def column_value(item_id, columns_ids, values=None):
     return minify(query)
 
 
-def item_by_column_value(board_id, column_id, value):
+def items_by_column_value(board_id, column_id, value):
     query = f"""{{
         items_by_column_values(
             board_id: {board_id},
             column_id: {column_id},
             column_value: {value})
-        {{item_id:id}}
+        {{item_id:id name}}
     }}"""
     return minify(query)
 

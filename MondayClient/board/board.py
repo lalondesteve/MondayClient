@@ -51,10 +51,10 @@ class Board(MondayItem):
             self.client.queries.get.board(self.id))
         self.values = r["data"]["boards"][0]
 
-    def get_item_by_column_value(self, column_id, value):
+    def get_items_by_column_value(self, column_id, value):
         r = self.client.execute_query(
             self.client.queries.get.item_by_column_value(
                 self.id, column_id, value
             )
         )
-        return r["data"]["items_by_column_values"][0]["item_id"]
+        return r["data"]["items_by_column_values"]
