@@ -27,8 +27,7 @@ class Item(MondayItem):
         if not self._columns:
             r = self.client.execute_query(
                 MondayClient.queries.get.column_value(
-                    self.id, self._columns, values='all')
-            )
+                    self.id, self._columns, values='all'))
             values = r["data"]["items"][0]["column_values"]
             self._columns = ItemColumns(values, self.client, self)
         return self._columns

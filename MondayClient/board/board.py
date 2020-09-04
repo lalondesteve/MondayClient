@@ -53,7 +53,7 @@ class Board(MondayItem):
 
     def get_items_by_column_value(self, column_id, value):
         r = self.client.execute_query(
-            self.client.queries.get.item_by_column_value(
+            self.client.queries.get.items_by_column_value(
                 self.id, column_id, value
             )
         )
