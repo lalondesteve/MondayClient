@@ -9,7 +9,6 @@ class Board(MondayItem):
         self.collection = collection
         self.id = data['board_id']
         self.name = data['name']
-        self.updated_at = data["updated_at"]
         self.description = data["description"]
         self._items = None
         self._item = None

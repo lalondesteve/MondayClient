@@ -7,7 +7,7 @@ import MondayClient.queries
 from MondayClient.board import BoardCollection
 
 logging.basicConfig(filename="MondayClient.log",
-                    level=logging.DEBUG,
+                    level=logging.INFO,
                     format='%(asctime)s: %(levelname)s: %(message)s')
 
 # Setup environment variables
@@ -37,7 +37,7 @@ class Client:
             r = requests.post(url=API_URL, json=data, headers=self.headers)
             logging.debug(f'{r}')
         except Exception as e:
-            logging.exception(e)
+            # logging.exception(e)
             raise e
         else:
             return r.json()

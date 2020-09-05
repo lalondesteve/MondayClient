@@ -9,7 +9,7 @@ def boards(limit=1000):
 
 def board(board_id):
     return f"{{boards(ids:{board_id}){{" \
-           f"board_id:id name description updated_at}} }}"
+           f"board_id:id name description}} }}"
 
 
 def items(board_id):
@@ -23,7 +23,7 @@ def items(board_id):
 
 def item(item_id):
     return f"{{items(ids:{item_id}){{" \
-           f"item_id:id name}} }}"
+           f"item_id:id name updated_at}} }}"
 
 
 def columns(item_id=None, board_id=None):

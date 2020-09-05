@@ -9,6 +9,7 @@ class Item(MondayItem):
         self.collection = collection
         self.id = data['item_id']
         self.name = data['name']
+        self.updated_at = data['updated_at']
         self._columns_ids = columns
         self._columns = None
 
