@@ -18,11 +18,11 @@ class Board(MondayItem):
         if not self._items:
             r = self.client.execute_query(MondayClient.queries.get.items(self.id))
             try:
-                self._items = r["data"]["boards"][0].get("items")
-            except Exception as e:
-                print(r, e)
+                _items = r["data"]["boards"][0].get("items")
+            except Exception:
+                raise
             else:
-                self._items = ItemCollection(self._items, self.client)
+                self._items = ItemCollection(_items, self.client)
         return self._items
 
     @property

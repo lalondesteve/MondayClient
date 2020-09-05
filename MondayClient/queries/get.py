@@ -15,7 +15,7 @@ def board(board_id):
 def items(board_id):
     query = f"""{{
         boards(ids:{board_id}){{
-            items {{item_id:id name}}
+            items {{item_id:id name updated_at}}
         }}
     }}"""
     return minify(query)
