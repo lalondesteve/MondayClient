@@ -30,7 +30,7 @@ class Client:
         if variables is not None:
             v = {'variables': variables}
             data.update(v)
-        logging.debug(f'{data}')
+        logging.debug(f'executing query : {data}')
         try:
             r = requests.post(url=API_URL, json=data, headers=self.headers)
             logging.debug(f'{r}')
@@ -38,6 +38,7 @@ class Client:
             # logging.exception(e)
             raise e
         else:
+            logging.debug(f'Response: {r.json()}')
             return r.json()
 
     @property
