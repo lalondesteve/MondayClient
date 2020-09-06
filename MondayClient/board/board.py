@@ -1,7 +1,6 @@
 import MondayClient.queries
 from MondayClient.item import ItemCollection, Item
 from MondayClient.base import MondayItem
-import MondayClient.queries.utils as utils
 
 
 class Board(MondayItem):
@@ -16,6 +15,7 @@ class Board(MondayItem):
                 data = self.get_data(board_id, item_id)
             elif board_id:
                 data = self.get_data(board_id)
+                self.items = data['items']
             else:
                 raise ValueError('data or board_id must be specified')
             self.data = data
@@ -23,7 +23,7 @@ class Board(MondayItem):
         self.name = data['name']
         self.description = data["description"]
         if item_id:
-            item = data["items"][0]
+            item = data['items'][0]
             self.item = item
 
     @property
@@ -31,12 +31,14 @@ class Board(MondayItem):
         if not self._items:
             r = self.client.execute_query(MondayClient.queries.get.items(self.id))
             try:
-                _items = r["data"]["boards"][0].get("items")
+                self.items = r["data"]["boards"][0].get("items")
             except Exception:
                 raise
-            else:
-                self._items = ItemCollection(_items, self.client)
         return self._items
+
+    @items.setter
+    def items(self, value):
+        self._items = ItemCollection(value, self.client)
 
     @property
     def item(self):
@@ -59,7 +61,7 @@ class Board(MondayItem):
                 self.client.queries.get.board_and_item(board_id, item_id))
         else:
             r = self.client.execute_query(
-                self.client.queries.get.board(board_id))
+                self.client.queries.get.board_and_items(board_id))
         return r["data"]["boards"][0]
 
     def refresh(self):

@@ -68,7 +68,12 @@ class Client:
             value = value[0]
         if not self._boards:
             # prevent useless loading of boards
-            self._board = Board(None, self, None, board_id=value)
+            try:
+                self._board = Board(None, self, None, board_id=value)
+            except Exception:
+                pass
+            else:
+                return
         self._board = self.boards[value]
 
 
