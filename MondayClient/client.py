@@ -54,16 +54,16 @@ class Client:
 
     @board.setter
     def board(self, value):
-        if 'item_id' in value:
+        if isinstance(value, dict) and 'item_id' in value:
             # straight loading of board and item without useless queries
             board_id = value['board_id']
             item_id = value['item_id']
             self._board = Board(None, self, None, board_id=board_id, item_id=item_id)
             return
-        if type(value) is dict:
+        if isinstance(value, dict):
             # in case user sends back the result of for i in self.boards
             value = value.get('board_id')
-        elif type(value) is list and len(value) == 1:
+        elif isinstance(value, list) and len(value) == 1:
             # some queries give results in lists
             value = value[0]
         if not self._boards:
