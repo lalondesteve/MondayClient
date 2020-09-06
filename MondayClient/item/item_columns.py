@@ -56,6 +56,8 @@ class ItemColumns(MondayItem):
         if kwargs:
             values.update(kwargs)
         for k, v in values.items():
+            if k == 'name':
+                continue
             col = self._get_col_from_key(k)
             value = self.client.queries.get.value_by_column_type(col['type'], v)
             values.update({col['column_id']: value})

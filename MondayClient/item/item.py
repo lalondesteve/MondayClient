@@ -8,7 +8,7 @@ class Item(MondayItem):
         super().__init__(data, client)
         self.collection = collection
         self.id = data['item_id']
-        self.name = data['name']
+        self._name = data['name']
         self.updated_at = data['updated_at']
         self._columns_ids = columns
         self._columns = None
@@ -33,6 +33,19 @@ class Item(MondayItem):
             self._columns = ItemColumns(values, self.client, self)
         return self._columns
 
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        r = self.client.execute_query(
+            MondayClient.queries.update.item_name(
+                self.client.board.id, self.id, value
+            )
+        )
+        self._name = value
+
     def refresh(self):
         self.client.board.item = None
         self.update_values()
@@ -46,3 +59,4 @@ class Item(MondayItem):
 
     def update_multiple_columns(self, values=None, **kwargs):
         self.columns.update_multiple_columns(values=values, **kwargs)
+        self.refresh()
