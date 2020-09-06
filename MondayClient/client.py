@@ -19,7 +19,7 @@ API_URL = "https://api.monday.com/v2"
 class Client:
     # Temporary for testing
     BOARD = os.getenv("MONDAY_BOARD")
-    logging.getLogger(__name__)
+    logging.getLogger(f"{__name__}.mondayclient")
 
     def __init__(self, token=TOKEN):
         self.token = token
