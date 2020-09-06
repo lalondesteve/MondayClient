@@ -9,7 +9,7 @@ def boards(limit=1000):
 
 def board(board_id):
     return f"{{boards(ids:{board_id}){{" \
-           f"board_id:id name description}} }}"
+           f"board_id:id name description updated_at}} }}"
 
 
 def items(board_id):
@@ -24,6 +24,28 @@ def items(board_id):
 def item(item_id):
     return f"{{items(ids:{item_id}){{" \
            f"item_id:id name updated_at}} }}"
+
+
+def board_and_items(board_id):
+    query = f"""{{
+        boards(ids:{board_id}){{
+            board_id:id name description updated_at
+            items {{item_id:id name updated_at}}
+        }}
+    }}"""
+    return minify(query)
+
+
+def board_and_item(board_id, item_id):
+    query = f"""{{
+        boards(ids:{board_id}){{
+            board_id:id name description updated_at
+            items(ids:{item_id}){{item_id:id name updated_at
+                column_values{{column_id:id text title type value}}
+            }}
+        }}
+    }}"""
+    return minify(query)
 
 
 def columns(item_id=None, board_id=None):

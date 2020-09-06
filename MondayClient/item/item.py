@@ -7,11 +7,13 @@ class Item(MondayItem):
     def __init__(self, data, client, collection, columns=None):
         super().__init__(data, client)
         self.collection = collection
+        self._columns = None
         self.id = data['item_id']
         self._name = data['name']
         self.updated_at = data['updated_at']
         self._columns_ids = columns
-        self._columns = None
+        if 'column_values' in data:
+            self.columns = data['column_values']
 
     @property
     def columns_ids(self):
@@ -32,6 +34,10 @@ class Item(MondayItem):
             values = r["data"]["items"][0]["column_values"]
             self._columns = ItemColumns(values, self.client, self)
         return self._columns
+
+    @columns.setter
+    def columns(self, value):
+        self._columns = ItemColumns(value, self.client, self)
 
     @property
     def name(self):

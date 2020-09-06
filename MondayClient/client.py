@@ -5,10 +5,7 @@ import logging
 from dotenv import load_dotenv
 import MondayClient.queries
 from MondayClient.board import BoardCollection
-
-# logging.basicConfig(filename="MondayClient.log",
-                    # level=logging.INFO,
-                    # format='%(asctime)s: %(levelname)s: %(message)s')
+from MondayClient.board import Board
 
 # Setup environment variables
 load_dotenv()
@@ -57,8 +54,24 @@ class Client:
 
     @board.setter
     def board(self, value):
+        if 'item_id' in value:
+            # straight loading of board and item without useless queries
+            board_id = value['board_id']
+            item_id = value['item_id']
+            self._board = Board(None, self, None, board_id=board_id, item_id=item_id)
+            return
         if type(value) is dict:
+            # in case user sends back the result of for i in self.boards
             value = value.get('board_id')
         elif type(value) is list and len(value) == 1:
+            # some queries give results in lists
             value = value[0]
+        if not self._boards:
+            # prevent useless loading of boards
+            self._board = Board(None, self, None, board_id=value)
         self._board = self.boards[value]
+
+
+if __name__ == '__main__':
+    mc = MondayClient.Client()
+    mc.board = {'board_id': mc.BOARD, 'item_id': 714143499}

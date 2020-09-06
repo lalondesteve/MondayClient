@@ -1,17 +1,30 @@
 import MondayClient.queries
-from MondayClient.item import ItemCollection
+from MondayClient.item import ItemCollection, Item
 from MondayClient.base import MondayItem
+import MondayClient.queries.utils as utils
 
 
 class Board(MondayItem):
-    def __init__(self, data, client, collection):
+    # TODO: Query items by column values
+    def __init__(self, data, client, collection, board_id=None, item_id=None):
         super().__init__(data, client)
         self.collection = collection
+        self._items = None
+        self._item = None
+        if not data:
+            if board_id and item_id:
+                data = self.get_data(board_id, item_id)
+            elif board_id:
+                data = self.get_data(board_id)
+            else:
+                raise ValueError('data or board_id must be specified')
+            self.data = data
         self.id = data['board_id']
         self.name = data['name']
         self.description = data["description"]
-        self._items = None
-        self._item = None
+        if item_id:
+            item = data["items"][0]
+            self.item = item
 
     @property
     def items(self):
@@ -31,18 +44,29 @@ class Board(MondayItem):
 
     @item.setter
     def item(self, value):
-        if type(value) is dict:
+        if not self._items and isinstance(value, dict):
+            self._item = Item(value, self.client, None)
+            return
+        if isinstance(value, dict):
             value = value.get('item_id')
-        elif type(value) is list and len(value) == 1:
+        elif isinstance(value, list) and len(value) == 1:
             value = value[0]
         self._item = self.items[value]
 
-    # TODO: Query items by column values
+    def get_data(self, board_id, item_id=None):
+        if item_id:
+            r = self.client.execute_query(
+                self.client.queries.get.board_and_item(board_id, item_id))
+        else:
+            r = self.client.execute_query(
+                self.client.queries.get.board(board_id))
+        return r["data"]["boards"][0]
 
     def refresh(self):
         self.client.board = None
         self.update_values()
-        self.collection.update_board(self.id, self.values)
+        if self.collection:
+            self.collection.update_board(self.id, self.values)
         self.client.board = self.id
 
     def update_values(self):
