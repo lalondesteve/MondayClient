@@ -85,7 +85,9 @@ def items_by_column_value(board_id, column_id, value):
             board_id: {board_id},
             column_id: {column_id},
             column_value: {value})
-        {{item_id:id name}}
+        {{item_id:id name updated_at
+            column_values{{column_id:id text title type value}}
+        }}
     }}"""
     return minify(query)
 
