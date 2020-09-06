@@ -65,4 +65,4 @@ class Item(MondayItem):
 
     def update_multiple_columns(self, values=None, **kwargs):
         self.columns.update_multiple_columns(values=values, **kwargs)
-        self.refresh()
+        # self.refresh()
