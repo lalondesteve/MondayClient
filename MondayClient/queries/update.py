@@ -37,7 +37,7 @@ def multiple_column_values(board_id: int, item_id: int, values=None, **kwargs):
                     item_id: {item_id},
                     column_values: $column_values)
                 {{
-                    id column_values (ids:{ids}) 
+                    id name column_values (ids:{ids}) 
                         {{id text}}
                 }}
             }}"""
@@ -64,7 +64,7 @@ def column_value(board_id, item_id, column_id: str, value):
                     column_id:{column_id},
                     value: {value})
                 {{
-                    id column_values (ids:{column_id}) {{id text}}
+                    id name column_values (ids:{column_id}) {{id text}}
                 }}
             }}'''
     return minify(query), None

@@ -22,7 +22,7 @@ class Item(MondayItem):
                 MondayClient.queries.get.columns(
                     item_id=self.id))
             values = r["data"]["items"][0]["column_values"]
-            self._columns_ids = [x["id"] for x in values]
+            self._columns_ids = [x["column_id"] for x in values]
         return self._columns_ids
 
     @property
@@ -30,7 +30,7 @@ class Item(MondayItem):
         if not self._columns:
             r = self.client.execute_query(
                 MondayClient.queries.get.column_value(
-                    self.id, self._columns, values='all'))
+                    self.id, self.columns_ids, values='all'))
             values = r["data"]["items"][0]["column_values"]
             self._columns = ItemColumns(values, self.client, self)
         return self._columns
@@ -38,6 +38,7 @@ class Item(MondayItem):
     @columns.setter
     def columns(self, value):
         self._columns = ItemColumns(value, self.client, self)
+        self._columns_ids = [x for x in self._columns.columns]
 
     @property
     def name(self):
@@ -50,7 +51,7 @@ class Item(MondayItem):
                 self.client.board.id, self.id, value
             )
         )
-        self._name = value
+        self._name = r["data"]["boards"][0]["items"]["name"]
 
     def refresh(self):
         self.client.board.item = None

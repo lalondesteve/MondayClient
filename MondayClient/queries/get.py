@@ -55,7 +55,7 @@ def columns(item_id=None, board_id=None):
         qry_header = f'boards(ids:{board_id}'
     else:
         raise TypeError('Either item_id or board_id must be specified')
-    return f"""{{ {qry_header} {{column_values{{id type}} }} }}"""
+    return f"""{{ {qry_header} {{column_values{{column_id:id type}} }} }}"""
 
 
 def column_value(item_id, columns_ids, values=None):

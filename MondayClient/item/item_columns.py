@@ -55,17 +55,18 @@ class ItemColumns(MondayItem):
             values = {}
         if kwargs:
             values.update(kwargs)
+        values_to_send = {}
         for k, v in values.items():
             if k == 'name':
                 continue
             col = self._get_col_from_key(k)
             value = self.client.queries.get.value_by_column_type(col['type'], v)
-            values.update({col['column_id']: value})
+            values_to_send.update({col['column_id']: value})
         r = self.client.execute_query(
             *self.client.queries.update.multiple_column_values(
                 self.client.board.id,
                 self.parent.id,
-                values=values
+                values=values_to_send
             )
         )
         if 'error_code' in r:
