@@ -6,9 +6,9 @@ from dotenv import load_dotenv
 import MondayClient.queries
 from MondayClient.board import BoardCollection
 
-logging.basicConfig(filename="MondayClient.log",
-                    level=logging.INFO,
-                    format='%(asctime)s: %(levelname)s: %(message)s')
+# logging.basicConfig(filename="MondayClient.log",
+                    # level=logging.INFO,
+                    # format='%(asctime)s: %(levelname)s: %(message)s')
 
 # Setup environment variables
 load_dotenv()
@@ -19,6 +19,7 @@ API_URL = "https://api.monday.com/v2"
 class Client:
     # Temporary for testing
     BOARD = os.getenv("MONDAY_BOARD")
+    logging.getLogger(__name__)
 
     def __init__(self, token=TOKEN):
         self.token = token
