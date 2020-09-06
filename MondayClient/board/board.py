@@ -46,7 +46,7 @@ class Board(MondayItem):
 
     @item.setter
     def item(self, value):
-        if not self._items and isinstance(value, dict):
+        if isinstance(value, dict) and 'column_values' in value:
             self._item = Item(value, self.client, None)
             return
         if isinstance(value, dict):

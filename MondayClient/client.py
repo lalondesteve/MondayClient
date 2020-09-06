@@ -71,11 +71,12 @@ class Client:
             # prevent useless loading of boards
             try:
                 self._board = Board(None, self, None, board_id=value)
-            except Exception as e:
-                print(e)
+            except Exception:
+                raise
             else:
                 return
-        self._board = self.boards[value]
+        raise ModuleNotFoundError
+        # self._board = self.boards[value]
 
 
 if __name__ == '__main__':
