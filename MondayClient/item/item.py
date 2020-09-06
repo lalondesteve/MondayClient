@@ -44,5 +44,5 @@ class Item(MondayItem):
             self.client.queries.get.item(self.id))
         self.values = r["data"]["items"][0]
 
-    def update_multiple_columns(self, **kwargs):
-        self.columns.update_multiple_columns(**kwargs)
+    def update_multiple_columns(self, values=None, **kwargs):
+        self.columns.update_multiple_columns(values=values, **kwargs)
