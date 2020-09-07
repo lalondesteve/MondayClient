@@ -30,7 +30,7 @@ class Client:
         if variables is not None:
             v = {'variables': variables}
             data.update(v)
-        logging.debug(f'executing query : {data}')
+        logging.info(f'executing query : {data}')
         try:
             r = requests.post(url=API_URL, json=data, headers=self.headers)
             logging.debug(f'{r}')
@@ -75,6 +75,7 @@ class Client:
                 raise
             else:
                 return
+        # this is a test to find circumstances of the commented call
         raise ModuleNotFoundError
         # self._board = self.boards[value]
 
