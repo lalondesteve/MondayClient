@@ -30,12 +30,14 @@ class ItemColumns(MondayItem):
         if key not in self.columns:
             if any(k.startswith(key) for k in self.columns):
                 keys = [k for k in self.columns if k.startswith(key)]
-                if len(keys) > 1:
-                    raise KeyError(f'{key} pattern could match multiple column ids {keys}')
-                else:
-                    key = keys[0]
+            elif any(k['title'].startswith(key) for k in self.columns):
+                keys = [k for k in self.columns if k['title'].startswith(key)]
             else:
                 raise KeyError(f'{key} not in {self.parent.name}')
+            if len(keys) > 1:
+                raise KeyError(f'{key} pattern could match multiple column ids or title {keys}')
+            else:
+                key = keys[0]
         return key
 
     def _get_col_from_key(self, key):
