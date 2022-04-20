@@ -30,7 +30,7 @@ class ItemColumns(MondayItem):
         if key not in self.columns:
             if any(k.startswith(key) for k in self.columns):
                 keys = [k for k in self.columns if k.startswith(key)]
-            elif any(k['title'].startswith(key) for k in self.columns):
+            elif any(k['title'].startswith(key) for k in self.values):
                 keys = [k for k in self.values if k['title'].startswith(key)]
             else:
                 raise KeyError(f'{key} not in {self.parent.name}')
