@@ -27,12 +27,12 @@ class Item(MondayItem):
 
     @property
     def columns(self):
-        # if not self._columns:
-        #     r = self.client.execute_query(
-        #         MondayClient.queries.get.column_value(
-        #             self.id, self.columns_ids, values='all'))
-        #     values = r["data"]["items"][0]["column_values"]
-        #     self._columns = ItemColumns(values, self.client, self)
+        if not self._columns:
+            r = self.client.execute_query(
+                MondayClient.queries.get.column_value(
+                    self.id, self.columns_ids, values='all'))
+            values = r["data"]["items"][0]["column_values"]
+            self._columns = ItemColumns(values, self.client, self)
         return self._columns
 
     @columns.setter
