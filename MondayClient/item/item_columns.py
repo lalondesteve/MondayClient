@@ -29,10 +29,11 @@ class ItemColumns(MondayItem):
 
     def _get_from_partial_key_or_title(self, key):
         if key not in self.columns:
+            # if exact key is not available, search for partial key or title
             if any(k.startswith(key) for k in self.columns):
                 keys = [k for k in self.columns if k.startswith(key)]
-            elif any(k['title'].startswith(key) for k in self.values):
-                keys = [k['column_id'] for k in self.values if k['title'].startswith(key)]
+            elif any(k['title'].lower().startswith(key.lower()) for k in self.values):
+                keys = [k['column_id'] for k in self.values if k['title'].lower().startswith(key.lower())]
             else:
                 raise KeyError(f'{key} not in {self.parent.name}')
             if len(keys) > 1:

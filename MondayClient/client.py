@@ -56,13 +56,13 @@ class Client:
     @board.setter
     def board(self, value):
         if isinstance(value, dict) and 'item_id' in value:
-            """ loading board and item from item dict"""
+            """loading board and item from item dict"""
             board_id = value['board_id']
             item_id = value['item_id']
             self._board = Board(None, self, None, board_id=board_id, item_id=item_id)
             return
         if isinstance(value, dict):
-            """ loading board from a board dict"""
+            """loading board from a board dict"""
             value = value.get('board_id')
         elif isinstance(value, list) and len(value) == 1:
             # some queries give results in lists
