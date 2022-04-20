@@ -4,3 +4,9 @@
 .*
 # Project exclude paths
 /venv/
+.idea/
+
+.DS_Store
+
+Thumbs.db
+
