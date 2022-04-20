@@ -56,28 +56,26 @@ class Client:
     @board.setter
     def board(self, value):
         if isinstance(value, dict) and 'item_id' in value:
-            # straight loading of board and item without useless queries
+            """ loading board and item from item dict"""
             board_id = value['board_id']
             item_id = value['item_id']
             self._board = Board(None, self, None, board_id=board_id, item_id=item_id)
             return
         if isinstance(value, dict):
-            # in case user sends back the result of for i in self.boards
+            """ loading board from a board dict"""
             value = value.get('board_id')
         elif isinstance(value, list) and len(value) == 1:
             # some queries give results in lists
             value = value[0]
+        # the value is probably a board_id as a string or int
         if not self._boards:
-            # prevent useless loading of boards
             try:
                 self._board = Board(None, self, None, board_id=value)
             except Exception:
                 raise
             else:
                 return
-        # this is a test to find circumstances of the commented call
-        raise ModuleNotFoundError
-        # self._board = self.boards[value]
+        self._board = self.boards[value]
 
 
 if __name__ == '__main__':
