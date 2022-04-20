@@ -79,13 +79,10 @@ class Client:
 
 
 if __name__ == '__main__':
-    from pprint import PrettyPrinter
-    pp = PrettyPrinter().pprint
+    import os
     mc = MondayClient.Client()
-    name = 'IVS'
+    name = os.getenv("MONDAY_BOARD_NAME")
     mc.board = next((x for x in mc.boards.values if name in x['name']))
     mc.board.item = mc.board.items.values[-1]
-    #pp(mc.board.item.columns.values)
-    mc.board.item.columns['RTM'] = 'hello'
-    mc.board.item.columns['Event'] = 'world'
-    #pp(mc.board.item.columns.values)
+    mc.board.item.columns['text'] = 'hello'
+
