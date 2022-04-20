@@ -11,11 +11,11 @@ from MondayClient.board import Board
 load_dotenv()
 TOKEN = os.getenv("MONDAY_TOKEN")
 API_URL = "https://api.monday.com/v2"
+if not TOKEN:
+    raise ValueError('no token in environment variables')
 
 
 class Client:
-    # Temporary for testing
-    BOARD = os.getenv("MONDAY_BOARD")
     logging.getLogger(f"{__name__}.mondayclient")
 
     def __init__(self, token=TOKEN):
@@ -79,5 +79,13 @@ class Client:
 
 
 if __name__ == '__main__':
+    from pprint import PrettyPrinter
+    pp = PrettyPrinter().pprint
     mc = MondayClient.Client()
-    mc.board = {'board_id': mc.BOARD, 'item_id': 714143499}
+    name = 'IVS'
+    mc.board = next((x for x in mc.boards.values if name in x['name']))
+    mc.board.item = mc.board.items.values[-1]
+    #pp(mc.board.item.columns.values)
+    mc.board.item.columns['RTM'] = 'hello'
+    mc.board.item.columns['Event'] = 'world'
+    #pp(mc.board.item.columns.values)

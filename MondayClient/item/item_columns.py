@@ -12,7 +12,7 @@ class ItemColumns(MondayItem):
         yield from (self.columns.get(i) for i in self.columns)
 
     def __getitem__(self, key):
-        key = self._get_from_partial_key(key)
+        key = self._get_from_partial_key_or_title(key)
         if 'text' in self.columns[key]:
             return self.columns[key]['text']
         else:
@@ -20,13 +20,14 @@ class ItemColumns(MondayItem):
 
     def __setitem__(self, key, value):
         item = self._get_col_from_key(key)
+        print("item", item)
         if 'text' in item:
             item['text'] = value
-        else:
-            item['value'] = value
-        self._update_column(item, key, value)
 
-    def _get_from_partial_key(self, key):
+        item['value'] = value
+        self._update_column(item)
+
+    def _get_from_partial_key_or_title(self, key):
         if key not in self.columns:
             if any(k.startswith(key) for k in self.columns):
                 keys = [k for k in self.columns if k.startswith(key)]
@@ -41,14 +42,14 @@ class ItemColumns(MondayItem):
         return key
 
     def _get_col_from_key(self, key):
-        key = self._get_from_partial_key(key)
+        key = self._get_from_partial_key_or_title(key)
         return self.columns[key]
 
-    def _update_column(self, item, key, value):
-        v = self.client.queries.get.value_by_column_type(item['type'], value)
+    def _update_column(self, item):
+        v = self.client.queries.get.value_by_column_type(item['type'], item['value'])
         r = self.client.execute_query(
             *self.client.queries.update.column_value(
-                self.client.board.id, self.parent.id, key, v))
+                self.client.board.id, self.parent.id, item['column_id'], v))
         if 'error_code' in r:
             raise MondayAPIError(r)
 

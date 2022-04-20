@@ -58,13 +58,14 @@ def column_value(board_id, item_id, column_id: str, value):
         value = json.dumps(json.dumps(value))
 
     query = f'''mutation {{
-                change_column_value(
+                change_simple_column_value(
                     board_id:{board_id},
                     item_id:{item_id},
-                    column_id:{column_id},
-                    value: {value})
+                    column_id:"{column_id}",
+                    value: "{value}")
                 {{
                     id name column_values (ids:{column_id}) {{id text}}
                 }}
             }}'''
+    print(query)
     return minify(query), None
